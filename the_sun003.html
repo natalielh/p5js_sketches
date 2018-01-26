@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>A p5.js sketch</title>
+	<link rel = "stylesheet" type = "text/css" href = "style/style_sketch.css">
+</head>
+<body>
+
+<script src = "p5/p5.min.js"></script>
+<script src = "javascript/p5utilities.js"></script>
+
+<!-- here is the javascript code using p5.js for the sketch: -->
+
+<script>
+//THE SUN 003
+
+//GLOBAL VARS
+var colours = [
+	[255,30,0],
+	[200,30,0],
+	[0, 0, 0, 200]
+];
+
+var angles = [];
+
+var max_radius = 80;
+var min_radius = 0;
+var layers = 20;
+var lines_each = 60;
+var max_weight = 1;
+
+var origin_set = [0, 0];
+
+//SETUP
+function setup() {  
+    // initialize the canvas & graphics state:  
+ 	canvas = createCanvas(windowWidth, windowHeight);
+	//blendMode(OVERLAY);
+	//blendMode(MULTIPLY);
+	translate(width/2, height/2);
+	noSmooth();
+	frameRate(30);
+	background(255);
+	strokeWeight(max_weight);
+	strokeCap(SQUARE);
+	stroke(colours[2]);
+	fill(colours[0]);
+	
+	origin_set = [width/2, height/2];
+	generateAngles();
+}
+
+function draw(){
+	//background(230,20);
+	background(255, 50);
+	//background(255);
+	drawImage(origin_set[0], origin_set[1]);
+}
+
+//FUNCTIONS
+function drawImage(x,y){
+	//stroke(100 * sin(frameCount/10));	//changes the stroke color between grey and black
+	radius = ((max_radius - min_radius) * sin(frameCount/200)) + min_radius;
+	//radius = ((max_radius - min_radius) * sin(frameCount/200)) + 20*cos(frameCount/15) + min_radius;	//makes the lines 'breathe' in and out
+	let line_counter = 0;
+	for(let q=0; q<layers; q++){
+		for(let w=0; w<lines_each; w++){
+			line(	// REMEMBER THAT THIS IS JUST FOR **ONE** LINE!
+				q * (radius) * sin(angles[line_counter]) + x,
+				q * (radius) * cos(angles[line_counter]) + y,
+				(q+1) * (radius) * sin(angles[line_counter]) + x,
+				(q+1) * (radius) * cos(angles[line_counter]) + y
+			);
+			if(q % 2 == 1){
+				angles[line_counter] += 0.005 * sin(frameCount/10);
+			}else{
+				angles[line_counter] -= 0.005 * cos(frameCount/10);
+			}
+			angles[line_counter] += 0.01;
+			line_counter++;
+		}
+	}
+	
+}
+
+function generateAngles(){
+	let angle_middleman = [];
+	for(let i=0; i<layers*lines_each; i++){
+		angle_middleman.push(random(TWO_PI));
+	}
+	angles = angle_middleman;
+}
+
+function mouseReleased(){
+	origin_set = [mouseX, mouseY]
+	generateAngles();
+}
+
+function windowResized() {
+	origin_set = [width/2, height/2]
+	resizeCanvas(windowWidth, windowHeight);
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>A p5.js sketch</title>
+	<link rel = "stylesheet" type = "text/css" href = "style/style_sketch.css">
+</head>
+<body>
+
+<script src = "p5/p5.min.js"></script>
+<script src = "javascript/p5utilities.js"></script>
+
+<!-- here is the javascript code using p5.js for the sketch: -->
+
+<script>
+//THE SUN 002
+
+//GLOBAL VARS
+var colours = [
+  [255,30,0],
+  [200,30,0],
+  [0, 0, 0, 200]
+];
+
+var angles = [];
+
+var radius = 80;
+var layers = 10;
+var lines_each = 100;
+var weight = 2;
+var dropoff_factor = 1;
+
+var origin_set = [0, 0]
+
+//SETUP
+function setup() {  
+    // initialize the canvas & graphics state:  
+  canvas = createCanvas(windowWidth, windowHeight);
+  blendMode(OVERLAY);
+  translate(width/2, height/2);
+  noSmooth();
+  frameRate(24);
+  //background(250);
+  background(240);
+  strokeWeight(weight);
+  strokeCap(SQUARE);
+  stroke(colours[2]);
+  fill(colours[0]);
+  
+  origin_set = [width/2, height/2];
+  generateAngles();
+}
+
+function draw(){
+  background(240,20);
+  // for(let a=0; a<angles.length; a++){
+  //  angles[a] = (angles[a]+0.01);
+  // }
+  drawImage(origin_set[0], origin_set[1]);
+}
+
+//FUNCTIONS
+function drawImage(x,y){
+  let line_counter = 0;
+  for(let q=0; q<layers; q++){
+    for(let w=0; w<lines_each; w++){
+      let theta = random(TWO_PI);
+      line( // REMEMBER THAT THIS IS JUST FOR **ONE** LINE!
+        q * (radius) * sin(angles[line_counter]) + x,
+        q * (radius) * cos(angles[line_counter]) + y,
+        (q+1) * (radius) * sin(angles[line_counter]) + x,
+        (q+1) * (radius) * cos(angles[line_counter]) + y
+      );
+      if(q % 2 == 1){
+        angles[line_counter] += 0.01;
+      }else{
+        angles[line_counter] -= 0.01;
+      }
+      //angles[line_counter] += 0.01;
+      line_counter++;
+    }
+  }
+  
+}
+
+function generateAngles(){
+  let angle_middleman = [];
+  for(let i=0; i<layers*lines_each; i++){
+    angle_middleman.push(random(TWO_PI));
+  }
+  angles = angle_middleman;
+}
+
+function mouseReleased(){
+  origin_set = [mouseX, mouseY]
+  generateAngles();
+}
+
+</script>
+
+</body>
+</html>

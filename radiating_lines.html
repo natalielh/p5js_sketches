@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>A p5.js sketch</title>
+	<link rel = "stylesheet" type = "text/css" href = "style/style_sketch.css">
+</head>
+<body>
+
+<script src = "p5/p5.min.js"></script>
+<script src = "javascript/p5utilities.js"></script>
+
+<!-- here is the javascript code using p5.js for the sketch: -->
+
+<script>
+/*
+	RADIATING LINES
+	- left mouse click: add a line
+*/
+
+//GLOBAL VARS
+var radius = 500; //default radius is 500 pixels
+var lines = 71;
+var weight = 3;
+var imagePadding = 60; //blank space added on each side of the image (in pixels)
+
+var origin_set = [0, 0];
+
+//SETUP
+function setup() {
+	// initialize the canvas & graphics state:  
+	canvas = createCanvas(windowWidth, windowHeight);
+	translate(width/2, height/2);	//this is what (0,0) is considered to be
+	background(255);
+	strokeWeight(weight);
+	strokeCap(ROUND);
+	stroke(0);
+	fill(0);
+	
+	origin_set = [width/2, height/2];
+	calculateRadiusSize();
+
+	drawImage(0,0);
+}
+
+//FUNCTIONS
+//(x,y) is for the desired center position of this generated image
+function drawImage(x,y){
+	for(var i=0; i<lines; i++){
+		//increment the drawing angle
+		let theta = i * (TWO_PI / lines);
+		//draw the new line
+		line(
+			x,
+			y,
+			radius * sin(theta) + x,
+			radius * cos(theta) + y
+		);
+	}
+}
+
+function calculateRadiusSize(){
+	if(windowWidth>windowHeight){
+		radius = height/2 - imagePadding;
+	}else{
+		radius = width/2 - imagePadding;
+	}
+}
+
+function mousePressed(){
+	//if the mouse is pressed down and then released, re-draw the image
+	background(255);
+	lines++;
+	drawImage(origin_set[0], origin_set[1]);
+}
+
+function windowResized() {
+	resizeCanvas(windowWidth, windowHeight);
+	origin_set = [width/2, height/2];
+	calculateRadiusSize();
+	background(255);
+	drawImage(origin_set[0], origin_set[1]);
+}
+
+</script>
+
+</body>
+</html>

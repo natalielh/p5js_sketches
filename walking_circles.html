@@ -35,13 +35,15 @@ var colours = [
   // [150],
   // [125]
   //// WHITE ONLY
-  [255]
+  //[255]
+  //// BLACK ONLY
+  [0]
 ];
 
 function setup() {  
    // initialize the canvas & graphics state:  
    canvas = createCanvas(windowWidth, windowHeight);
-   background(0); //begin with a black background
+   background(255); //begin with a white background
    //frameRate(30);
    fill(255,0,0);
    noStroke();
@@ -56,7 +58,7 @@ function setup() {
 
 function draw(){ //DRAW LOOP BEGIN
     if(background_clearing_on){
-       background(0,10); //fading black background effect
+       background(255,10); //fading background effect
        }
   
     for(var q=0; q<organisms.length; q++){

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>A p5.js sketch</title>
+	<link rel = "stylesheet" type = "text/css" href = "style/style_sketch.css">
+</head>
+<body>
+
+<script src = "p5/p5.min.js"></script>
+<script src = "javascript/p5utilities.js"></script>
+
+<!-- here is the javascript code using p5.js for the sketch: -->
+
+<script>
+//THE SUN 001
+
+//GLOBAL VARS
+var radius = 50;
+var layers = 5;
+var lines_each = 200;
+var weight = 1;
+
+var origin_set = [0, 0]
+
+//SETUP
+function setup() {  
+	// initialize the canvas & graphics state:  
+	canvas = createCanvas(windowWidth, windowHeight);
+	translate(width/2, height/2);	//this is what (0,0) is considered to be
+	background(255);
+	strokeWeight(weight);
+	strokeCap(SQUARE);
+	stroke(0);
+	fill(0);
+	
+	origin_set = [width/2, height/2];
+
+	drawImage(0,0);
+}
+
+function windowResized() {
+	resizeCanvas(windowWidth, windowHeight);
+	origin_set = [width/2, height/2]
+	background(255);
+	drawImage(origin_set[0], origin_set[1]);
+}
+
+//FUNCTIONS
+
+//(x,y) is for the desired center position of this generated image
+function drawImage(x,y){
+	//this loop is for each LAYER
+	for(let q=0; q<layers; q++){
+		//this loop is for each LINE
+		for(let w=0; w<lines_each; w++){
+			//randomize a new angle for the next line
+			let theta = random(TWO_PI);
+			//draw the next line
+			line(
+				//from
+				q * radius * sin(theta) + x,
+				q * radius * cos(theta) + y,
+				//to
+				(q+1) * radius * sin(theta) + x,
+				(q+1) * radius * cos(theta) + y
+			);
+		}
+	}
+	
+}
+
+function mouseReleased(){
+	//if the mouse is pressed down and then released, re-draw the image
+	background(255);
+	drawImage(origin_set[0], origin_set[1]);
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>A p5.js sketch</title>
+	<link rel = "stylesheet" type = "text/css" href = "style/style_sketch.css">
+</head>
+<body>
+
+<script src = "p5/p5.min.js"></script>
+<script src = "javascript/p5utilities.js"></script>
+
+<!-- here is the javascript code using p5.js for the sketch: -->
+
+<script>
+var organisms = [];
+var num_organisms = 70;
+var speed_multiplier = 10;
+var amp_multiplier = 3;
+
+var background_clearing_on = true;
+
+var colours = [
+  //// COLOURFUL
+  // [50, 150, 200],
+  // [200, 230, 10],
+  // [240, 200, 10],
+  // [240, 230, 10],
+  // [240, 150, 0],
+  // [240, 100, 0]
+  //// BLACK & WHITE
+  // [255],
+  // [230],
+  // [200],
+  // [175],
+  // [150],
+  // [125]
+  //// WHITE ONLY
+  [255]
+];
+
+function setup() {  
+   // initialize the canvas & graphics state:  
+   canvas = createCanvas(windowWidth, windowHeight);
+   background(0); //begin with a black background
+   //frameRate(30);
+   fill(255,0,0);
+   noStroke();
+   noSmooth();
+   ellipseMode(RADIUS);
+  
+   generate_organisms(num_organisms);
+   // console.log(organisms);
+
+  
+}
+
+function draw(){ //DRAW LOOP BEGIN
+    if(background_clearing_on){
+       background(0,10); //fading black background effect
+       }
+  
+    for(var q=0; q<organisms.length; q++){
+      
+      //
+      if(organisms[q].x > width){
+         organisms[q].x = 0;
+      }
+      else if(organisms[q].x < 0){
+         organisms[q].x = width;
+      }
+        
+      if(organisms[q].y > height){
+         organisms[q].y = 0;
+      }
+      else if(organisms[q].y < 0){
+         organisms[q].y = height ;
+      }
+      //
+      
+      // behaviour set #1:
+      // organisms[q].x += speed_multiplier * cos(organisms[q].x);
+      // organisms[q].y += speed_multiplier * sin(organisms[q].y);
+      
+      //behaviour set #2:
+      organisms[q].x += speed_multiplier * cos(organisms[q].direction);
+      organisms[q].y += speed_multiplier * sin(organisms[q].direction);
+      
+      //behavior set #3:
+      organisms[q].y += speed_multiplier * amp_multiplier * organisms[q].radius/100 * sin(millis()/100); //bounce the circles up and down over time
+      
+      //behavior set #3a:
+      // organisms[q].y += speed_multiplier * amp_multiplier * sin(millis()/100);
+      
+      //behavior set #3b:
+      organisms[q].x -= speed_multiplier * amp_multiplier/2 * organisms[q].radius/200 * sin(millis()/100);
+          
+                  
+    } //end of for-loop
+    // after all these calculations have finished, draw all the circles
+    drawAllCircles(organisms);
+} //DRAW LOOP END
+
+  
+//FUNCTIONS
+function drawAllCircles(circles){
+  for(let i=0; i<organisms.length; i++){
+    drawCircle(
+      circles[i].x,
+      circles[i].y,
+      circles[i].radius,
+      colours[circles[i].colour]
+    );
+  }
+}
+
+function drawCircle(x, y, radius, colour){
+  //push();
+  fill(colour);
+  ellipse(x, y, radius, radius);
+  //pop();
+}
+
+function generate_organisms(num){
+  for(let i=0; i<num; i++){
+    organisms.push({
+      x : floor(random(width)),
+      y : floor(random(height)),
+      direction : random(TWO_PI),
+      radius : floor(random(5,40)),
+      colour : floor(random(colours.length))
+    });
+  }
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+</script>
+
+</body>
+</html>

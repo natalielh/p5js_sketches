@@ -1,0 +1,17 @@
+/*
+	these styles:
+	- remove the space & scrollbars around the canvas
+	- optimize canvas rendering for speed
+*/  
+
+body {margin:0; padding:0;}
+
+canvas {
+	display:block;
+	image-rendering: optimizeSpeed;
+	image-rendering: -moz-crisp-edges;
+	image-rendering: -webkit-optimize-contrast;
+	image-rendering: optimize-contrast;
+	-ms-interpolation-mode: nearest-neighbor;
+	}
+	

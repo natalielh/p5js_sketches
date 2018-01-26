@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>A p5.js sketch</title>
+	<link rel = "stylesheet" type = "text/css" href = "style/style_sketch.css">
+</head>
+<body>
+
+<script src = "p5/p5.min.js"></script>
+<script src = "javascript/p5utilities.js"></script>
+
+<!-- here is the javascript code using p5.js for the sketch: -->
+
+<script>
+function setup(){
+	// initialize the canvas & graphics state:  
+	canvas = createCanvas(windowWidth, windowHeight);
+	background(225); //begin with a grey background
+	//frameRate(30);
+	fill(255,0,0); //black fill
+	//noStroke();
+	noSmooth();
+}
+
+function draw(){
+	background(225);
+	text("p5.js canvas is running", windowWidth/2, windowHeight/2);
+	line(0, Math.floor(windowHeight/2*Math.sin(millis()/1000)+windowHeight/2), windowWidth, Math.floor(windowHeight/2*Math.sin(millis()/1000)+windowHeight/2));
+	line(Math.floor(windowWidth/2*Math.sin(millis()/1000)+windowWidth/2), 0, Math.floor(windowWidth/2*Math.sin(millis()/1000)+windowWidth/2), windowHeight);
+}
+
+function windowResized(){
+	resizeCanvas(windowWidth, windowHeight);
+}
+</script>
+
+</body>
+</html>

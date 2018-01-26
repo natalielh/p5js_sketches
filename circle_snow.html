@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>A p5.js sketch</title>
+	<link rel = "stylesheet" type = "text/css" href = "style/style_sketch.css">
+</head>
+<body>
+
+<script src = "p5/p5.min.js"></script>
+<script src = "javascript/p5utilities.js"></script>
+
+<!-- here is the javascript code using p5.js for the sketch: -->
+
+<script>
+//CIRCLE SNOW
+
+//GLOBAL VARS
+var rain = [];
+var max_rain = 50;
+
+var line_weight = 1;
+var max_mass = 400;
+var speed_additive = 5;
+
+//SETUP
+function setup() {  
+  // initialize the canvas & graphics state:  
+	canvas = createCanvas(windowWidth, windowHeight);
+	frameRate(30);
+  	background(255);
+	strokeWeight(line_weight);
+	strokeCap(SQUARE);
+	stroke(0);
+	fill(0);
+	
+	generateRain();
+}
+
+function draw(){
+	background(255,40);
+	drawRain();
+}
+
+//FUNCTIONS
+function drawRain(){
+	for(let p=0; p<rain.length; p++){
+		
+		line(rain[p].x,rain[p].y, rain[p].x, rain[p].y-rain[p].mass);
+		ellipse(rain[p].x, rain[p].y, rain[p].mass/10, rain[p].mass/10);
+		
+		rain[p].y += rain[p].mass/60 + speed_additive;
+		
+		if(rain[p].y>height){
+			 rain[p].y = 0;
+	 	}	 	
+	}
+}
+
+function generateRain(){
+	for(let i=0; i<max_rain; i++){
+		rain.push({
+			x : random(width),
+			y : random(height),
+			mass : random(max_mass)
+		});
+	}
+}
+
+function mouseReleased(){
+	//background(255);
+	rain.push({
+			x : mouseX,
+			y : mouseY,
+			mass : random(max_mass)
+		});
+}
+
+</script>
+
+</body>
+</html>

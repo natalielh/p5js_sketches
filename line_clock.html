@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>A p5.js sketch</title>
+	<link rel = "stylesheet" type = "text/css" href = "style/style_sketch.css">
+</head>
+<body>
+
+<script src = "p5/p5.min.js"></script>
+<script src = "javascript/p5utilities.js"></script>
+
+<!-- here is the javascript code using p5.js for the sketch: -->
+
+<script>
+// THE LINE CLOCK
+//GLOBAL VARS
+var radius = 300;
+var lines = 0;
+var weight = 1;
+
+var offset = 0;
+
+var origin_set = [0, 0];
+
+//SETUP
+function setup() {  
+    // initialize the canvas & graphics state:  
+	canvas = createCanvas(windowWidth, windowHeight);
+	frameRate(12);
+	translate(width/2, height/2);	//this is what (0,0) is considered to be
+	background(255);
+	strokeWeight(weight);
+	strokeCap(SQUARE);
+	stroke(0);
+	fill(0);
+	
+	origin_set = [width/2, height/2];
+
+	drawImage(0,0);
+}
+
+function draw() {
+	background(255);
+	drawImage(origin_set[0], origin_set[1]);
+	offset += 0.003;
+	
+	if(frameCount % 12 == 0){
+			lines++;
+	}
+}
+
+//FUNCTIONS
+//(x,y) is for the desired center position of this generated image
+function drawImage(x,y){
+	for(var i=0; i<lines; i++){
+		//increment the drawing angle
+		let theta = i * (TWO_PI / lines) + offset;
+		//draw the new line
+		line(
+			x,
+			y,
+			radius * sin(theta) + x,
+			radius * cos(theta) + y
+		);
+	}
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+	origin_set = [width/2, height/2];
+	background(255);
+	drawImage(origin_set[0], origin_set[1]);
+}
+
+</script>
+
+</body>
+</html>
